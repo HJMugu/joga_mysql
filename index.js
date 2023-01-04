@@ -39,6 +39,19 @@ con.connect(function(err){
     console.log('connected to joga_mysql db')
 })
 
+//show all articles / index page
+app.get('/', (req,res) => {
+    let query = 'SELECT * FROM article';
+    let articles = []
+    con.query(query, (err, result) => {
+        if (err) throw err
+        articles = result
+        res.render('index', {
+            articles: articles
+        })
+    })
+
+})
 // app start point
 app.listen(3000, () => {
     console.log('app is started at http://localhost:3000')
