@@ -41,7 +41,7 @@ con.connect(function(err){
 
 //show all articles / index page
 app.get('/', (req,res) => {
-    let query = 'SELECT * FROM article INNER JOIN author ON article.author_id=author.id';
+    let query = 'SELECT * FROM article';
     let articles = []
     con.query(query, (err, result) => {
         if (err) throw err
@@ -55,9 +55,9 @@ app.get('/', (req,res) => {
 
 //show article by this slug
 app.get('/article/:slug', (req,res) => {
-    let query = `SELECT * FROM article INNER JOIN author ON article.author_id=author.id WHERE slug="${req.params.slug}"`
+    let query = `SELECT *, article.name as article_name, author.name as author_name FROM article INNER JOIN author ON author.id=article.author_id WHERE slug="${req.params.slug}"`
     let article
-    let author
+
     con.query(query, (err, result) => {
         if (err) throw err
         article = result
