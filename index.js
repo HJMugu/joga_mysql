@@ -61,12 +61,37 @@ app.get('/article/:slug', (req,res) => {
     con.query(query, (err, result) => {
         if (err) throw err
         article = result
-        console.log(article)
+
         res.render('article', {
             article: article,
 
         })
     })
+})
+
+
+//show articles by an single author
+app.get('/author/:author_id', (req,res) => {
+    let query = `SELECT * FROM article WHERE author_id="${req.params.author_id}"`
+    let articles
+    let author
+    con.query(query, (err, result) => {
+        if (err) throw err
+        articles = result
+
+        query = `SELECT * FROM author WHERE id="${req.params.author_id}"`
+
+
+        con.query(query, (err, result) => {
+            if (err) throw err
+            author = result
+            res.render('author', {
+                author: author,
+                articles: articles
+            })
+        })
+    })
+
 })
 // app start point
 app.listen(3000, () => {
